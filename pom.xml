@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nhnacademy</groupId>
-    <artifactId>spring-iot-data-parser</artifactId>
+    <artifactId>spring-iot-data-handler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-iot-data-parser</name>
-    <description>spring-iot-data-parser</description>
+    <name>spring-iot-data-handler</name>
+    <description>spring-iot-data-handler</description>
     <url/>
     <licenses>
         <license/>
@@ -39,6 +39,34 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>annotationProcessor</scope>
+        </dependency>
+
+        <!-- Jackson 자동 구성 전용 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.influxdb/influxdb-client-java -->
+        <!-- InfluxDB -->
+        <dependency>
+            <groupId>com.influxdb</groupId>
+            <artifactId>influxdb-client-java</artifactId>
+            <version>7.2.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+        <!-- CSV Parser -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.14.0</version>
         </dependency>
     </dependencies>
 
