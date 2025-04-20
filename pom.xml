@@ -53,6 +53,22 @@
             <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+        <!-- Jackson XML -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.18.3</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-csv -->
+        <!-- Jackson CSV -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-csv</artifactId>
+            <version>2.18.3</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.influxdb/influxdb-client-java -->
         <!-- InfluxDB -->
         <dependency>

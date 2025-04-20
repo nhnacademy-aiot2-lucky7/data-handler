@@ -1,0 +1,14 @@
+[
+  {
+    "sensorId": "sensor-a",
+    "timestamp": "2025-04-20T10:00:00",
+    "temperature": 22.5,
+    "humidity": 45
+  },
+  {
+    "sensorId": "sensor-b",
+    "timestamp": "2025-04-20T10:00:10",
+    "temperature": 19.8,
+    "humidity": 52
+  }
+]
