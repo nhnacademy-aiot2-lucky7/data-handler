@@ -1,0 +1,14 @@
+<sensors>
+    <sensor>
+        <sensorId>sensor-a</sensorId>
+        <timestamp>2025-04-20T10:00:00</timestamp>
+        <temperature>22.5</temperature>
+        <humidity>45</humidity>
+    </sensor>
+    <sensor>
+        <sensorId>sensor-b</sensorId>
+        <timestamp>2025-04-20T10:00:10</timestamp>
+        <temperature>19.8</temperature>
+        <humidity>52</humidity>
+    </sensor>
+</sensors>

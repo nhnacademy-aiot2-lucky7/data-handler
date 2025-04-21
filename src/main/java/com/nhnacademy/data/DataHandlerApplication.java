@@ -1,13 +1,13 @@
-package com.nhnacademy.parser;
+package com.nhnacademy.data;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringIotDataParserApplication {
+public class DataHandlerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringIotDataParserApplication.class, args);
+        SpringApplication.run(DataHandlerApplication.class, args);
     }
 
 }
