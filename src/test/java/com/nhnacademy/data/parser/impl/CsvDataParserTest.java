@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-class XmlDataParserTest {
+class CsvDataParserTest {
 
-    private final XmlDataParser parser = new XmlDataParser();
+    private final CsvDataParser parser = new CsvDataParser();
 
     private File file;
 
@@ -27,11 +27,11 @@ class XmlDataParserTest {
     void setUp() throws URISyntaxException {
         index = new AtomicInteger();
 
-        URL url = getClass().getClassLoader().getResource("test_sensor_data.xml");
+        URL url = getClass().getClassLoader().getResource("test_sensor_data.csv");
         Assertions.assertNotNull(
                 url,
                 "resources 내에 해당하는 파일이 존재하지 않습니다: '%s'"
-                        .formatted("test_sensor_data.xml")
+                        .formatted("test_sensor_data.csv")
         );
 
         file = new File(url.toURI()); // URL -> URI -> File

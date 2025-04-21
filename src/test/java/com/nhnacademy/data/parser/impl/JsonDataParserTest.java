@@ -1,26 +1,29 @@
 package com.nhnacademy.data.parser.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-@SpringBootTest
+// @ExtendWith: JUnit 5 테스트 클래스에 해당되는 class 기능을 확장합니다.
+@ExtendWith(SpringExtension.class) // SpringExtension.class: Spring의 테스트 환경
+@ContextConfiguration(classes = {ObjectMapper.class, JsonDataParser.class}) // 최소한의 Bean 등록만 하면서, 해당하는 class 객체를 불러오기
 class JsonDataParserTest {
-
-    @Autowired
-    private ResourceLoader resourceLoader;
 
     @Autowired
     private JsonDataParser parser;
@@ -30,15 +33,28 @@ class JsonDataParserTest {
     private AtomicInteger index;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() throws URISyntaxException {
         index = new AtomicInteger();
-        Resource resource =
-                resourceLoader
-                        .getResource("classpath:test_sensor_data.json");
-        file = resource.getFile();
+
+        URL url = getClass().getClassLoader().getResource("test_sensor_data.json");
+        Assertions.assertNotNull(
+                url,
+                "resources 내에 해당하는 파일이 존재하지 않습니다: '%s'"
+                        .formatted("test_sensor_data.json")
+        );
+
+        file = new File(url.toURI()); // URL -> URI -> File
+        Assertions.assertTrue(
+                file.exists(),
+                "해당 경로에 테스트 파일이 존재하지 않습니다: '%s'".formatted(url.getPath())
+        );
     }
 
-    @DisplayName("문서 추가 예정...")
+    /**
+     * 실제로 들어오는 센서 데이터 구조에 따라서 <br>
+     * parsing 방식이 달라질 수도 있습니다.
+     */
+    @DisplayName("데이터 구조 parsing 테스트")
     @Test
     void testParsing() throws IOException {
         log.debug("==================================================================================================");

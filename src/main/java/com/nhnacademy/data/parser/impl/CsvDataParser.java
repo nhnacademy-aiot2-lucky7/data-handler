@@ -18,11 +18,16 @@ public class CsvDataParser implements DataParser {
 
     private static final String FILE_TYPE = "CSV";
 
+    // private CsvMapper csvMapper;
+
     @Override
     public String getFileType() {
         return FILE_TYPE;
     }
 
+    /**
+     * @see <a href="https://commons.apache.org/proper/commons-csv/apidocs/index.html">사용법 가이드</a>
+     */
     @Override
     public List<Map<String, Object>> parsing(File file) throws IOException {
         // 최신 Builder API 사용
@@ -30,6 +35,7 @@ public class CsvDataParser implements DataParser {
                 CSVFormat.DEFAULT.builder()
                         .setHeader()                // 첫 줄을 헤더로 인식
                         .setSkipHeaderRecord(true)  // 첫 줄을 레코드에서 제외
+                        .setDelimiter(',')          // CSV 칸 구분자 지정
                         .get();
         try (
                 CSVParser parser =
@@ -38,6 +44,10 @@ public class CsvDataParser implements DataParser {
                                 .setFormat(format)
                                 .get()
         ) {
+            /*CsvSchema schema = CsvSchema
+                    .emptySchema()
+                    .withHeader();*/
+
             List<Map<String, Object>> result = new ArrayList<>();
 
             for (CSVRecord record : parser) {

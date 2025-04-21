@@ -30,7 +30,8 @@ public class JsonDataParser implements DataParser {
     public List<Map<String, Object>> parsing(File file) throws IOException {
         return objectMapper.readValue(
                 file,
-                new TypeReference<>() {}
+                new TypeReference<>() {
+                }
         );
     }
 }

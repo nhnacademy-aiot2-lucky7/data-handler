@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * 교재 내용 검증
+ *
  * @see <a href="https://github.com/nhnacademy-bootcamp/spring-blog/blob/main/docs/06.spring-boot/07.%5B%EC%8B%A4%EC%8A%B5%5D-spring-boot-di.adoc">출처</a>
  */
 @Slf4j
