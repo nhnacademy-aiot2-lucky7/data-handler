@@ -27,10 +27,20 @@ public class XmlDataParser implements DataParser {
     }
 
     @Override
+    public List<Map<String, Object>> parsing(String payload) throws IOException {
+        return xmlMapper.readValue(
+                payload,
+                new TypeReference<>() {
+                }
+        );
+    }
+
+    @Override
     public List<Map<String, Object>> parsing(File file) throws IOException {
         return xmlMapper.readValue(
                 file,
-                new TypeReference<>() {}
+                new TypeReference<>() {
+                }
         );
     }
 }
