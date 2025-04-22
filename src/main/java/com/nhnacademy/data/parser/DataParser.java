@@ -7,8 +7,21 @@ import java.util.Map;
 
 public interface DataParser {
 
+    /**
+     * @return Parser가 호환되는 Data Format Type을 반환합니다.
+     */
     String getFileType();
 
+    /**
+     * @param payload Broker가 보낸 페이로드 데이터
+     * @return Parsing Data
+     */
+    List<Map<String, Object>> parsing(String payload) throws IOException;
+
+    /**
+     * @param file Broker가 보낸 페이로드 파일
+     * @return Parsing Data
+     */
     List<Map<String, Object>> parsing(File file) throws IOException;
 
     default boolean matchFileType(String fileName) {
