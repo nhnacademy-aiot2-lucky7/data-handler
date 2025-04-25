@@ -12,11 +12,13 @@ public interface DataParser {
      */
     String getFileType();
 
+    boolean matchDataType(String payload);
+
     /**
      * @param payload Broker가 보낸 페이로드 데이터
      * @return Parsing Data
      */
-    List<Map<String, Object>> parsing(String payload) throws IOException;
+    Map<String, Object> parsing(String payload) throws IOException;
 
     /**
      * @param file Broker가 보낸 페이로드 파일

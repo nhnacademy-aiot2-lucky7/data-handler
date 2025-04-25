@@ -27,7 +27,13 @@ public class JsonDataParser implements DataParser {
     }
 
     @Override
-    public List<Map<String, Object>> parsing(String payload) throws IOException {
+    public boolean matchDataType(String payload) {
+        return (payload.startsWith("{") && payload.endsWith("}"))
+                || (payload.startsWith("[") && payload.endsWith("]"));
+    }
+
+    @Override
+    public Map<String, Object> parsing(String payload) throws IOException {
         return objectMapper.readValue(
                 payload,
                 new TypeReference<>() {

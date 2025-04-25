@@ -31,13 +31,23 @@ public class CsvDataParser implements DataParser {
     }
 
     @Override
-    public List<Map<String, Object>> parsing(String payload) throws IOException {
+    public boolean matchDataType(String payload) {
+        return payload.contains("\n") && payload.contains(",")
+                && !payload.contains("{") && !payload.contains("<");
+    }
+
+    /**
+     * 추후에 로직을 수정할 예정...
+     */
+    @Deprecated
+    @Override
+    public Map<String, Object> parsing(String payload) throws IOException {
         try (MappingIterator<Map<String, Object>> it =
                      csvMapper.readerFor(Map.class)
                              .with(csvSchema)
                              .readValues(payload)
         ) {
-            return it.readAll();
+            return it.hasNext() ? it.next() : Map.of();
         }
     }
 

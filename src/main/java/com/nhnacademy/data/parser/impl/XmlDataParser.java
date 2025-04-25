@@ -27,7 +27,14 @@ public class XmlDataParser implements DataParser {
     }
 
     @Override
-    public List<Map<String, Object>> parsing(String payload) throws IOException {
+    public boolean matchDataType(String payload) {
+        return payload.startsWith("<")
+                && payload.endsWith(">")
+                && payload.contains("</");
+    }
+
+    @Override
+    public Map<String, Object> parsing(String payload) throws IOException {
         return xmlMapper.readValue(
                 payload,
                 new TypeReference<>() {

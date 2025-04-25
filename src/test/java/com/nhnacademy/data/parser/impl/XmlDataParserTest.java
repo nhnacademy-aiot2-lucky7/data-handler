@@ -55,7 +55,7 @@ class XmlDataParserTest {
         log.debug("[XML Payload]");
         log.debug("\n{}", payload);
 
-        List<Map<String, Object>> result = parser.parsing(payload);
+        Map<String, Object> result = parser.parsing(payload);
         DataParserUtil.print(result);
     }
 }

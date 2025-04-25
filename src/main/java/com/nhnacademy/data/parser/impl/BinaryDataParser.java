@@ -18,8 +18,13 @@ public class BinaryDataParser implements DataParser {
     }
 
     @Override
-    public List<Map<String, Object>> parsing(String payload) throws IOException {
-        return List.of();
+    public boolean matchDataType(String payload) {
+        return false;
+    }
+
+    @Override
+    public Map<String, Object> parsing(String payload) throws IOException {
+        return Map.of();
     }
 
     @Override

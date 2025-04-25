@@ -13,12 +13,22 @@ public class DataParserResolver {
         this.dataParsers = dataParsers;
     }
 
-    public DataParser getDataParser(String fileName) {
+    public DataParser getDataParser(String payload) {
+        String data = payload.trim();
+        for (DataParser dataParser : dataParsers) {
+            if (dataParser.matchDataType(data)) {
+                return dataParser;
+            }
+        }
+        return null;
+    }
+
+    /*public DataParser getDataParser(String fileName) {
         for (DataParser dataParser : dataParsers) {
             if (dataParser.matchFileType(fileName)) {
                 return dataParser;
             }
         }
         return null;
-    }
+    }*/
 }
