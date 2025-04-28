@@ -1,8 +1,8 @@
-package com.nhnacademy.data.parser.impl;
+package com.nhnacademy.parser.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.nhnacademy.data.parser.DataParser;
+import com.nhnacademy.parser.DataParser;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -27,7 +27,14 @@ public class XmlDataParser implements DataParser {
     }
 
     @Override
-    public List<Map<String, Object>> parsing(String payload) throws IOException {
+    public boolean matchDataType(String payload) {
+        return payload.startsWith("<")
+                && payload.endsWith(">")
+                && payload.contains("</");
+    }
+
+    @Override
+    public Map<String, Object> parsing(String payload) throws IOException {
         return xmlMapper.readValue(
                 payload,
                 new TypeReference<>() {

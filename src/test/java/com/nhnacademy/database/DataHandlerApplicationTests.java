@@ -1,4 +1,4 @@
-package com.nhnacademy.data;
+package com.nhnacademy.database;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

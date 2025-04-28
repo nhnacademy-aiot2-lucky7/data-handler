@@ -1,4 +1,4 @@
-package com.nhnacademy.data.parser;
+package com.nhnacademy.parser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

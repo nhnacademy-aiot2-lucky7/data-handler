@@ -1,5 +1,6 @@
-package com.nhnacademy.data.parser.impl;
+package com.nhnacademy.parser.impl;
 
+import com.nhnacademy.parser.DataParserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 class CsvDataParserTest {
@@ -21,12 +21,8 @@ class CsvDataParserTest {
 
     private File file;
 
-    private AtomicInteger index;
-
     @BeforeEach
     void setUp() throws URISyntaxException {
-        index = new AtomicInteger();
-
         URL url = getClass().getClassLoader().getResource("test_sensor_data.csv");
         Assertions.assertNotNull(
                 url,
@@ -42,20 +38,24 @@ class CsvDataParserTest {
     }
 
     /**
-     * 실제로 들어오는 센서 데이터 구조에 따라서 <br>
+     * 실제로 들어오는 센서 데이터에 따라서 <br>
      * parsing 방식이 달라질 수도 있습니다.
      */
-    @DisplayName("데이터 구조 parsing 테스트")
+    @DisplayName("Data File - parsing 테스트")
     @Test
-    void testParsing() throws IOException {
-        log.debug("==================================================================================================");
+    void testFileParsing() throws IOException {
         List<Map<String, Object>> result = parser.parsing(file);
-        result.forEach(map -> {
-            log.debug("[index: {}]", index.incrementAndGet());
-            map.forEach((k, v) ->
-                    log.debug("\t{\"{}\": {}}", k, v)
-            );
-        });
-        log.debug("==================================================================================================");
+        DataParserUtil.print(result);
+    }
+
+    @DisplayName("Payload - parsing 테스트")
+    @Test
+    void testStringParsing() throws IOException {
+        String payload = DataParserUtil.getPayload(file);
+        log.debug("[CSV Payload]");
+        log.debug("\n{}", payload);
+
+        Map<String, Object> result = parser.parsing(payload);
+        DataParserUtil.print(result);
     }
 }

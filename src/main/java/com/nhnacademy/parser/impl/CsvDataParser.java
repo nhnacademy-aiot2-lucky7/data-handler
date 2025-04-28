@@ -1,9 +1,9 @@
-package com.nhnacademy.data.parser.impl;
+package com.nhnacademy.parser.impl;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.nhnacademy.data.parser.DataParser;
+import com.nhnacademy.parser.DataParser;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -31,13 +31,22 @@ public class CsvDataParser implements DataParser {
     }
 
     @Override
-    public List<Map<String, Object>> parsing(String payload) throws IOException {
+    public boolean matchDataType(String payload) {
+        return payload.contains("\n") && payload.contains(",")
+                && !payload.contains("{") && !payload.contains("<");
+    }
+
+    /**
+     * 추후에 로직을 수정할 예정...
+     */
+    @Override
+    public Map<String, Object> parsing(String payload) throws IOException {
         try (MappingIterator<Map<String, Object>> it =
                      csvMapper.readerFor(Map.class)
                              .with(csvSchema)
                              .readValues(payload)
         ) {
-            return it.readAll();
+            return it.hasNext() ? it.next() : Map.of();
         }
     }
 
