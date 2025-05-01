@@ -1,6 +1,5 @@
 package com.nhnacademy.common.properties;
 
-import com.nhnacademy.common.TransferMode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 @ConfigurationProperties(prefix = "mqtt")
-public class MqttProperties {
+public final class MqttProperties {
 
-    private TransferMode receiveMode = TransferMode.SYNC;
+    private TransferMode receiveMode = TransferMode.ASYNC;
 
     private String brokerAddress = "tcp://localhost:1883";
 

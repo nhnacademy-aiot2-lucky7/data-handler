@@ -1,5 +1,6 @@
 package com.nhnacademy.parser.impl;
 
+import com.nhnacademy.common.parser.impl.XmlDataParser;
 import com.nhnacademy.parser.DataParserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;

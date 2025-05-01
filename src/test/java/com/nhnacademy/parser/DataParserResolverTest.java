@@ -1,5 +1,7 @@
 package com.nhnacademy.parser;
 
+import com.nhnacademy.common.parser.DataParser;
+import com.nhnacademy.common.parser.DataParserResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

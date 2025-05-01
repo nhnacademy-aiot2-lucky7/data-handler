@@ -1,6 +1,9 @@
 package com.nhnacademy.common.thread.queue;
 
-import com.nhnacademy.database.SensorData;
+import com.nhnacademy.common.parser.dto.ParsingData;
+import com.nhnacademy.common.thread.Executable;
+import com.nhnacademy.common.thread.properties.RuleEngineThreadPoolProperties;
+import com.nhnacademy.common.thread.runnable.RuleEngineTask;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.BlockingQueue;
@@ -11,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 실행할 수 있도록 관리하는 대기열 클래스입니다.
  * <hr>
  *
- * @see com.nhnacademy.common.thread.runnable.ConsumeRuleEngineQueue
+ * @see RuleEngineTask
  */
 @Component
 public final class RuleEngineQueue {
@@ -19,14 +22,18 @@ public final class RuleEngineQueue {
     /**
      * Rule Engine Queue
      */
-    private final BlockingQueue<SensorData> queue = new LinkedBlockingQueue<>(100);
+    private final BlockingQueue<Executable> queue;
+
+    public RuleEngineQueue(RuleEngineThreadPoolProperties properties) {
+        this.queue = new LinkedBlockingQueue<>(properties.getCapacity());
+    }
 
     /**
      * Rule Engine에 처리할 작업을 대기열에 저장합니다.
      */
-    public void put(SensorData data) {
+    public void put(Executable executable) {
         try {
-            queue.put(data);
+            queue.put(executable);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -35,13 +42,11 @@ public final class RuleEngineQueue {
     /**
      * Rule Engine에 처리할 작업을 대기열에서 가져옵니다.
      */
-    public SensorData take() {
-        SensorData data = null;
-        try {
-            data = queue.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return data;
+    public Executable take() throws InterruptedException {
+        return queue.take();
+    }
+
+    public boolean isNotEmpty() {
+        return !queue.isEmpty();
     }
 }
