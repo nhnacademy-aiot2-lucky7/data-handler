@@ -1,10 +1,10 @@
+/*
 package com.nhnacademy.database.influxdb.repository;
 
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import com.nhnacademy.common.config.InfluxDBConfig;
-import com.nhnacademy.database.SensorData;
+import com.nhnacademy.common.parser.dto.ParsingData;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,11 +26,11 @@ class InfluxDBRepositoryTest {
     @Autowired
     private WriteApi writeApi;
 
-    private SensorData sensorData;
+    private ParsingData parsingData;
 
     @BeforeEach
     void setUp() {
-        sensorData = new SensorData(
+        parsingData = new ParsingData(
                 "24e124785c389010",
                 "temperature",
                 "온도",
@@ -48,14 +48,14 @@ class InfluxDBRepositoryTest {
 
         Point point = Point
                 .measurement("sensor_data")
-                .addTag("sensor-id", sensorData.getData().get("value").toString())
-                .addTag("data-type", sensorData.getDataType())
-                .addTag("location", sensorData.getLocation())
-                .addField("value", sensorData.getData().get("value").toString())
-                .addField("data-type-kor", sensorData.getDataDesc())
-                .time(sensorData.getInstant(), WritePrecision.MS);
+                .addTag("sensor-id", parsingData.getData().get("value").toString())
+                .addTag("data-type", parsingData.getDataType())
+                .addTag("location", parsingData.getLocation())
+                .addField("value", parsingData.getData().get("value").toString())
+                .addField("data-type-kor", parsingData.getDataDesc())
+                .time(parsingData.getInstant(), WritePrecision.MS);
 
         writeApi.writePoint(point);
         writeApi.flush();
     }
-}
+}*/

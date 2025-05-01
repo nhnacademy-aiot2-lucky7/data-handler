@@ -1,6 +1,7 @@
 package com.nhnacademy.parser.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.common.parser.impl.JsonDataParser;
 import com.nhnacademy.parser.DataParserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;

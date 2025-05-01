@@ -1,70 +1,73 @@
 package com.nhnacademy.broker.mqtt.execute;
 
+import com.nhnacademy.broker.mqtt.MqttExecutionContext;
+import com.nhnacademy.common.parser.DataParser;
+import com.nhnacademy.common.parser.dto.ParsingData;
 import com.nhnacademy.common.thread.Executable;
-import com.nhnacademy.database.SensorData;
-import com.nhnacademy.common.thread.queue.InfluxDBQueue;
-import com.nhnacademy.common.thread.queue.RuleEngineQueue;
-import com.nhnacademy.parser.DataParser;
-import com.nhnacademy.type.util.DataTypeUtil;
+import com.nhnacademy.influxdb.execute.InfluxDBExecute;
+import com.nhnacademy.rule.execute.RuleEngineExecute;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 
 @Slf4j
 public final class MqttExecute implements Executable {
 
+    private final MqttExecutionContext context;
+
     private final DataParser dataParser;
-
-    private final DataTypeUtil dataTypeUtil;
-
-    private final InfluxDBQueue influxDBQueue;
-
-    private final RuleEngineQueue ruleEngineQueue;
 
     private final String topic;
 
     private final String payload;
 
-    private String deviceId = "";
+    private String gatewayId = "null";
 
-    private String dataType = "";
+    private String sensorId = "null";
 
-    private String location = "";
+    private String location = "null";
+
+    private String spot = "null";
+
+    private String type = "null";
+
+    private Double value = null;
+
+    private Long timestamp = null;
 
     public MqttExecute(
-            DataParser dataParser, DataTypeUtil dataTypeUtil,
-            InfluxDBQueue influxDBQueue, RuleEngineQueue ruleEngineQueue,
+            MqttExecutionContext context, DataParser dataParser,
             String topic, String payload
     ) {
+        this.context = context;
         this.dataParser = dataParser;
-        this.dataTypeUtil = dataTypeUtil;
-        this.influxDBQueue = influxDBQueue;
-        this.ruleEngineQueue = ruleEngineQueue;
         this.topic = topic;
         this.payload = payload;
     }
 
     @Override
     public void execute() {
-        Map<String, Object> parsed;
         try {
-            parsed = dataParser.parsing(payload);
+            payloadParsing();
         } catch (IOException e) {
-            /// TODO: 공통 예외처리 추가 예정...
             log.error("Parsing failed: {}", e.getMessage(), e);
             return;
         }
-
         topicParsing();
-        String dataDesc = dataTypeUtil.get(dataType);
-        if (dataDesc.equals("lora")) {
-            return;
-        }
 
-        SensorData data = new SensorData(deviceId, dataType, dataDesc, location, parsed);
-        influxDBQueue.put(data);
-        ruleEngineQueue.put(data);
+        ParsingData parsingData = new ParsingData(
+                gatewayId, sensorId, location,
+                spot, type, value, timestamp
+        );
+
+        context.getRuleEngineQueue().put(
+                new RuleEngineExecute(context.getRuleEngineService(), parsingData)
+        );
+        context.getInfluxDBQueue().put(
+                new InfluxDBExecute(context.getInfluxDBService(), parsingData)
+        );
     }
 
     private void topicParsing() {
@@ -75,28 +78,35 @@ public final class MqttExecute implements Executable {
                     location = parsing[++n];
                     break;
                 case "d":
-                    deviceId = parsing[++n];
+                    gatewayId = parsing[++n];
                     break;
                 case "e":
-                    dataType = parsing[++n];
+                    type = parsing[++n];
                     break;
                 default:
             }
         }
     }
 
-    /**
-     * 센서가 설치된 공간 및, 위치
-     */
-    // private String location;
+    private void payloadParsing() throws IOException {
+        Map<String, Object> parsing = dataParser.parsing(payload);
 
-    /**
-     * 센서의 아이디
-     */
-    // private String deviceId;
+        Object rawValue = parsing.get("value");
+        if (rawValue instanceof Number number) {
+            value = number.doubleValue();
+        } else if (rawValue instanceof String string) {
+            value = Double.parseDouble(string);
+        }
 
-    /**
-     * 센서가 측정한 데이터의 이름
-     */
-    // private String dataName;
+        Object rawTime = parsing.get("time");
+        if (rawTime instanceof Number number) {
+            timestamp = number.longValue();
+        } else if (rawTime instanceof String string) {
+            try {
+                timestamp = Long.parseLong(string);
+            } catch (NumberFormatException ignored) {
+                timestamp = Instant.now().getEpochSecond();
+            }
+        }
+    }
 }

@@ -18,10 +18,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MqttConfig {
 
-    private final MqttProperties mqttProperties;
+    private final MqttProperties properties;
 
-    public MqttConfig(MqttProperties mqttProperties) {
-        this.mqttProperties = mqttProperties;
+    public MqttConfig(MqttProperties properties) {
+        this.properties = properties;
     }
 
     /**
@@ -30,8 +30,8 @@ public class MqttConfig {
     @Bean
     IMqttClient iMqttClient() throws MqttException {
         return new MqttClient(
-                mqttProperties.getBrokerAddress(),
-                mqttProperties.getClientId(),
+                properties.getBrokerAddress(),
+                properties.getClientId(),
                 new MemoryPersistence()
         );
     }
@@ -42,8 +42,8 @@ public class MqttConfig {
     @Bean
     IMqttAsyncClient iMqttAsyncClient() throws MqttException {
         return new MqttAsyncClient(
-                mqttProperties.getBrokerAddress(),
-                mqttProperties.getClientId(),
+                properties.getBrokerAddress(),
+                properties.getClientId(),
                 new MemoryPersistence()
         );
     }
@@ -76,7 +76,6 @@ public class MqttConfig {
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);    // 연결이 손실될 경우, 재연결 시도
         options.setCleanSession(true);          // 재연결 되었을 시, 이전의 session 연결을 clean 합니다.
-        // options.setKeepAliveInterval(30);
         return options;
     }
 }
