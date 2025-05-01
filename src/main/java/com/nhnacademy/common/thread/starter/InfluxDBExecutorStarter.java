@@ -1,5 +1,6 @@
 package com.nhnacademy.common.thread.starter;
 
+import com.nhnacademy.common.properties.InfluxDBProperties;
 import com.nhnacademy.common.thread.queue.InfluxDBQueue;
 import com.nhnacademy.common.thread.runnable.InfluxDBTask;
 import jakarta.annotation.PostConstruct;
@@ -16,20 +17,24 @@ public final class InfluxDBExecutorStarter {
 
     private final InfluxDBQueue influxDBQueue;
 
+    private final InfluxDBProperties properties;
+
     private final AtomicBoolean running;
 
     public InfluxDBExecutorStarter(
             @Qualifier("influxDBExecutor") ExecutorService influxDBExecutor,
             @Qualifier("influxDBTaskRunning") AtomicBoolean running,
-            InfluxDBQueue influxDBQueue
+            InfluxDBProperties properties, InfluxDBQueue influxDBQueue
     ) {
         this.influxDBExecutor = influxDBExecutor;
         this.influxDBQueue = influxDBQueue;
+        this.properties = properties;
         this.running = running;
     }
 
     @PostConstruct
     private void start() {
+        if (!properties.isStart()) return;
         influxDBExecutor.submit(
                 new InfluxDBTask(influxDBQueue, running)
         );
