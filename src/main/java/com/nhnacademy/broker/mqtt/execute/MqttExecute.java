@@ -96,11 +96,7 @@ public final class MqttExecute implements Executable {
         if (rawValue instanceof Number number) {
             value = number.doubleValue();
         } else if (rawValue instanceof String string) {
-            try {
-                value = Double.parseDouble(string);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException(e);
-            }
+            value = Double.parseDouble(string);
         }
 
         Object rawTime = parsing.get("time");
