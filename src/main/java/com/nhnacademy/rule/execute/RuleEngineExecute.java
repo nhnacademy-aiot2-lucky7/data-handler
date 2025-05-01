@@ -18,7 +18,6 @@ public final class RuleEngineExecute implements Executable {
         this.parsingData = parsingData;
     }
 
-    /// TODO: Rule Engine에게 전달하는 것은 잠시 보류
     @Override
     public void execute() {
         RuleData ruleData = new RuleData(
@@ -28,7 +27,7 @@ public final class RuleEngineExecute implements Executable {
                 parsingData.getValue(),
                 parsingData.getTimestamp()
         );
-
+        ruleEngineService.sensorDataSend(ruleData);
     }
 
     @Override

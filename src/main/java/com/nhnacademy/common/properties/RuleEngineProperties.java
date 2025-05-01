@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 public final class RuleEngineProperties {
 
     /**
+     * start data entry with Rule Engine
+     */
+    private boolean start = false;
+
+    /**
      * Rule Engine의 REST API의 주소를 지정합니다.
      */
     private String baseUrl = "https://localhost:10245";
