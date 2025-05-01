@@ -12,12 +12,26 @@ import org.springframework.stereotype.Component;
 public final class RuleEngineProperties {
 
     /**
-     * Rule Engine의 REST API의 주소를 지정합니다.
+     * start data entry with Rule Engine
      */
-    private String baseUrl = "https://localhost:10245";
+    private boolean start = false;
 
     /**
-     * Rule Engine이 Parsing 데이터를 받을 수 있는 REST Controller Path를 지정합니다.
+     * Rule Engine Service에 할당된 Ip address를 지정합니다.
+     */
+    private String ipAddress = "localhost";
+
+    /**
+     * Rule Engine Service에 할당된 Port number를 지정합니다.
+     */
+    private int port = 10245;
+
+    /**
+     * Rule Engine Service에서 Parsing 데이터를 받을 수 있는 REST Controller Path를 지정합니다.
      */
     private String path = "/ruleEngine/data";
+
+    public String getBaseUrl() {
+        return "https://%s:%d".formatted(ipAddress, port);
+    }
 }
