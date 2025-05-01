@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "influxdb")
 public final class InfluxDBProperties {
 
+    /**
+     * start data entry with InfluxDB
+     */
+    private boolean start = false;
+
     private String url;
 
     private String token;
