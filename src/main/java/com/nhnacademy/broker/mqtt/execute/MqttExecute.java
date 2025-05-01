@@ -63,7 +63,7 @@ public final class MqttExecute implements Executable {
                 spot, type, value, timestamp
         );
 
-        context.getInfluxDBQueue().put(
+        context.getRuleEngineQueue().put(
                 new RuleEngineExecute(context.getRuleEngineService(), parsingData)
         );
         context.getInfluxDBQueue().put(
