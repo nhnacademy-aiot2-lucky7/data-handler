@@ -1,5 +1,6 @@
 package com.nhnacademy.common.thread.starter;
 
+import com.nhnacademy.common.properties.RuleEngineProperties;
 import com.nhnacademy.common.thread.queue.RuleEngineQueue;
 import com.nhnacademy.common.thread.runnable.RuleEngineTask;
 import jakarta.annotation.PostConstruct;
@@ -16,23 +17,26 @@ public final class RuleEngineExecutorStarter {
 
     private final RuleEngineQueue ruleEngineQueue;
 
+    private final RuleEngineProperties properties;
+
     private final AtomicBoolean running;
 
     public RuleEngineExecutorStarter(
             @Qualifier("ruleEngineExecutor") ExecutorService ruleEngineExecutor,
             @Qualifier("ruleEngineTaskRunning") AtomicBoolean running,
-            RuleEngineQueue ruleEngineQueue
+            RuleEngineProperties properties, RuleEngineQueue ruleEngineQueue
     ) {
         this.ruleEngineExecutor = ruleEngineExecutor;
         this.ruleEngineQueue = ruleEngineQueue;
+        this.properties = properties;
         this.running = running;
     }
 
-    /// TODO: 프로퍼티스에 아래의 작업을 수행하지 않는 옵션 추가 예정
     @PostConstruct
     private void start() {
-        /*ruleEngineExecutor.submit(
+        if (!properties.isStart()) return;
+        ruleEngineExecutor.submit(
                 new RuleEngineTask(ruleEngineQueue, running)
-        );*/
+        );
     }
 }
