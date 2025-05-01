@@ -24,8 +24,6 @@ public final class RuleEngineExecute implements Executable {
         RuleData ruleData = new RuleData(
                 parsingData.getGatewayId(),
                 parsingData.getSensorId(),
-                parsingData.getLocation(),
-                parsingData.getSpot(),
                 parsingData.getType(),
                 parsingData.getValue(),
                 parsingData.getTimestamp()

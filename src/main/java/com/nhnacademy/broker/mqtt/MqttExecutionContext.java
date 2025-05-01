@@ -4,7 +4,6 @@ import com.nhnacademy.common.thread.queue.InfluxDBQueue;
 import com.nhnacademy.common.thread.queue.RuleEngineQueue;
 import com.nhnacademy.influxdb.service.InfluxDBService;
 import com.nhnacademy.rule.service.RuleEngineService;
-import com.nhnacademy.type.util.DataTypeUtil;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
@@ -20,17 +19,13 @@ public final class MqttExecutionContext {
 
     private final RuleEngineService ruleEngineService;
 
-    private final DataTypeUtil dataTypeUtil;
-
     public MqttExecutionContext(
             InfluxDBQueue influxDBQueue, InfluxDBService influxDBService,
-            RuleEngineQueue ruleEngineQueue, RuleEngineService ruleEngineService,
-            DataTypeUtil dataTypeUtil
+            RuleEngineQueue ruleEngineQueue, RuleEngineService ruleEngineService
     ) {
         this.influxDBQueue = influxDBQueue;
         this.influxDBService = influxDBService;
         this.ruleEngineQueue = ruleEngineQueue;
         this.ruleEngineService = ruleEngineService;
-        this.dataTypeUtil = dataTypeUtil;
     }
 }

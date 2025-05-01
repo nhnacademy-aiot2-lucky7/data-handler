@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
+@Deprecated
 public final class DataTypeUtil {
 
     private final Map<String, String> dataTypes = new ConcurrentHashMap<>();

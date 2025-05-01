@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 public final class RuleEngineProperties {
 
     /**
-     * Rule Engine의 REST API를 지정합니다.
+     * Rule Engine의 REST API의 주소를 지정합니다.
      */
     private String baseUrl = "https://localhost:10245";
 
     /**
-     * Rule Engine의 REST API Content URI를 지정합니다.
+     * Rule Engine이 Parsing 데이터를 받을 수 있는 REST Controller Path를 지정합니다.
      */
-    private String sendUri = "/ruleEngine/data";
+    private String path = "/ruleEngine/data";
 }

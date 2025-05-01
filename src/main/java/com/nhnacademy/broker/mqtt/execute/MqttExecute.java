@@ -56,7 +56,6 @@ public final class MqttExecute implements Executable {
             return;
         }
         topicParsing();
-        context.getDataTypeUtil().get(type);
 
         ParsingData parsingData = new ParsingData(
                 gatewayId, sensorId, location,
