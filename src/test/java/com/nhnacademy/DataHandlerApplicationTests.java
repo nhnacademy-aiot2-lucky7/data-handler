@@ -1,10 +1,10 @@
-package com.nhnacademy.parser;
+package com.nhnacademy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringIotDataParserApplicationTests {
+class DataHandlerApplicationTests {
 
     @Test
     void contextLoads() {
