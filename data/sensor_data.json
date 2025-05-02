@@ -1,44 +1,21 @@
 {
-  "temperature": {
-    "type": "temperature",
-    "name": "온도",
-    "description": "대기 중의 온도를 나타냅니다.",
-    "unit": "°C"
-  },
-  "humidity": {
-    "type": "humidity",
-    "name": "습도",
-    "description": "대기 중의 습도를 나타냅니다.",
-    "unit": "%"
-  },
-  "co2": {
-    "type": "co2",
-    "name": "이산화탄소",
-    "description": "공기 중 이산화탄소 농도를 나타냅니다.",
-    "unit": "ppm"
-  },
-  "tvoc": {
-    "type": "tvoc",
-    "name": "TVOC",
-    "description": "총 휘발성 유기 화합물 농도입니다.",
-    "unit": "ppb"
-  },
-  "battery": {
-    "type": "battery",
-    "name": "배터리",
-    "description": "센서 단말기의 배터리 상태입니다.",
-    "unit": "%"
-  },
-  "infrared": {
-    "type": "infrared",
-    "name": "적외선",
-    "description": "사람의 열을 감지하는 적외선 데이터입니다.",
-    "unit": "-"
-  },
-  "illumination": {
-    "type": "illumination",
-    "name": "조도",
-    "description": "빛의 밝기를 나타냅니다.",
-    "unit": "lx"
-  }
+  "lora" : "lora",
+  "region_count" : "region_count",
+  "activity" : "activity",
+  "distance" : "distance",
+  "occupancy" : "occupancy",
+  "di" : "di",
+  "co2" : "co2",
+  "infrared_and_visible" : "infrared_and_visible",
+  "infrared" : "infrared",
+  "battery" : "battery",
+  "temperature" : "temperature",
+  "humidity" : "humidity",
+  "press" : "press",
+  "tvoc" : "tvoc",
+  "people_count_all" : "people_count_all",
+  "illumination" : "illumination",
+  "battery_level" : "battery_level",
+  "people_count_max" : "people_count_max",
+  "pressure" : "pressure"
 }

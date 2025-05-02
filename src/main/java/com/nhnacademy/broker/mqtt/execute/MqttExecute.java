@@ -78,7 +78,9 @@ public final class MqttExecute implements Executable {
                     location = parsing[++n];
                     break;
                 case "d":
-                    gatewayId = parsing[++n];
+                    String id = parsing[++n];
+                    // gatewayId = id;
+                    sensorId = id;
                     break;
                 case "e":
                     type = parsing[++n];
@@ -91,6 +93,8 @@ public final class MqttExecute implements Executable {
     private void payloadParsing() throws IOException {
         Map<String, Object> parsing = dataParser.parsing(payload);
 
+        // 소수점 2자리까지만
+        // Math.ceil();
         Object rawValue = parsing.get("value");
         if (rawValue instanceof Number number) {
             value = number.doubleValue();
