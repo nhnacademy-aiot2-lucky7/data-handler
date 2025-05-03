@@ -3,7 +3,6 @@ package com.nhnacademy.common.thread.shutdown.impl;
 import com.nhnacademy.common.thread.pool.ThreadPoolConfig;
 import com.nhnacademy.common.thread.shutdown.AbstractExecutorShutdown;
 import com.nhnacademy.influxdb.InfluxDBManagement;
-import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,6 @@ public final class InfluxDBExecutorShutdown extends AbstractExecutorShutdown {
         this.influxDBManagement = influxDBManagement;
     }
 
-    @PreDestroy
     public void shutdown() {
         shutdownExecutor(influxDBExecutor, "influxDBExecutor");
         influxDBManagement.allClose();
