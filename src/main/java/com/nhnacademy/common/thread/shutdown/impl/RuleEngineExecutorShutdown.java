@@ -2,7 +2,6 @@ package com.nhnacademy.common.thread.shutdown.impl;
 
 import com.nhnacademy.common.thread.pool.ThreadPoolConfig;
 import com.nhnacademy.common.thread.shutdown.AbstractExecutorShutdown;
-import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,6 @@ public final class RuleEngineExecutorShutdown extends AbstractExecutorShutdown {
         this.ruleEngineExecutor = ruleEngineExecutor;
     }
 
-    @PreDestroy
     public void shutdown() {
         shutdownExecutor(ruleEngineExecutor, "ruleEngineExecutor");
     }
