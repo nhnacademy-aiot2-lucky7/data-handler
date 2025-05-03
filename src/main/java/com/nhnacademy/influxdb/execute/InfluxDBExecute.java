@@ -30,7 +30,6 @@ public final class InfluxDBExecute implements Executable {
                 parsingData.getValue(),
                 parsingData.getTimestamp()
         );
-        log.info("데이터 저장: {}", influxData);
         influxDBService.sensorDataSave(influxData);
     }
 
