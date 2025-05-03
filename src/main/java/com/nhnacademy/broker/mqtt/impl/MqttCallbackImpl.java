@@ -1,6 +1,7 @@
 package com.nhnacademy.broker.mqtt.impl;
 
 import com.nhnacademy.broker.mqtt.MqttExecutionContext;
+import com.nhnacademy.broker.mqtt.MqttReconnectTrigger;
 import com.nhnacademy.broker.mqtt.execute.MqttExecute;
 import com.nhnacademy.common.parser.DataParserResolver;
 import com.nhnacademy.common.thread.queue.ParserQueue;
@@ -22,15 +23,19 @@ public final class MqttCallbackImpl implements MqttCallback {
 
     private final MqttExecutionContext mqttExecutionContext;
 
+    private final MqttReconnectTrigger reconnectTrigger;
+
     private final DataParserResolver parserResolver;
 
     private final ParserQueue parserQueue;
 
     public MqttCallbackImpl(
             MqttExecutionContext mqttExecutionContext,
+            MqttReconnectTrigger reconnectTrigger,
             DataParserResolver parserResolver, ParserQueue parserQueue
     ) {
         this.mqttExecutionContext = mqttExecutionContext;
+        this.reconnectTrigger = reconnectTrigger;
         this.parserResolver = parserResolver;
         this.parserQueue = parserQueue;
     }
@@ -41,15 +46,15 @@ public final class MqttCallbackImpl implements MqttCallback {
     @Override
     public void connectionLost(Throwable cause) {
         log.error("MQTT Client connection error: {}", cause.getMessage());
+        reconnectTrigger.triggerReconnect(); // 관리 객체에 직접 접근하지 않음
     }
 
     /**
      * MQTT Client 메세지를 받았을 경우
      */
     @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception {
+    public void messageArrived(String topic, MqttMessage message) {
         if (topic.contains("/status")) return;
-
         String payload = new String(message.getPayload(), StandardCharsets.UTF_8);
         try {
             parserQueue.put(
