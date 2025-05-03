@@ -164,8 +164,8 @@ public final class MqttManagement {
                         break;
                     } catch (MqttException e) {
                         log.warn("🔁 MQTT 재연결 실패: {}", e.getMessage());
-                        Thread.sleep(5000);
                     }
+                    Thread.sleep(5000);
                 }
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
