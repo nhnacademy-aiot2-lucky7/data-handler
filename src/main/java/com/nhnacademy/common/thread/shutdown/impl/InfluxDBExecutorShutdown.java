@@ -1,7 +1,7 @@
 package com.nhnacademy.common.thread.shutdown.impl;
 
-import com.nhnacademy.common.thread.pool.ThreadPoolConfig;
-import com.nhnacademy.common.thread.shutdown.AbstractExecutorShutdown;
+import com.nhnacademy.common.config.ThreadPoolConfig;
+import com.nhnacademy.common.thread.shutdown.ExecutorShutdown;
 import com.nhnacademy.influxdb.InfluxDBManagement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 
 @Slf4j
 @Component
-public final class InfluxDBExecutorShutdown extends AbstractExecutorShutdown {
+public final class InfluxDBExecutorShutdown extends ExecutorShutdown {
 
     private final ExecutorService influxDBExecutor;
 
