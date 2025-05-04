@@ -2,6 +2,8 @@ package com.nhnacademy.broker.mqtt;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public final class MqttReconnectTrigger {
 
@@ -12,7 +14,7 @@ public final class MqttReconnectTrigger {
     }
 
     public void triggerReconnect() {
-        if (mqttManagement != null) {
+        if (Objects.nonNull(mqttManagement)) {
             mqttManagement.reconnect();
         }
     }
