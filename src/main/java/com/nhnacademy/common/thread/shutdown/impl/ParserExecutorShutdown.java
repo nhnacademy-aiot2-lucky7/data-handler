@@ -1,8 +1,8 @@
 package com.nhnacademy.common.thread.shutdown.impl;
 
 import com.nhnacademy.broker.mqtt.MqttManagement;
-import com.nhnacademy.common.thread.pool.ThreadPoolConfig;
-import com.nhnacademy.common.thread.shutdown.AbstractExecutorShutdown;
+import com.nhnacademy.common.config.ThreadPoolConfig;
+import com.nhnacademy.common.thread.shutdown.ExecutorShutdown;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Component
-public final class ParserExecutorShutdown extends AbstractExecutorShutdown {
+public final class ParserExecutorShutdown extends ExecutorShutdown {
 
     private final ExecutorService parserExecutor;
 

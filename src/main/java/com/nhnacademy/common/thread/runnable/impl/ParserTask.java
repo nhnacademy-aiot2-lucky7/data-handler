@@ -1,7 +1,8 @@
-package com.nhnacademy.common.thread.runnable;
+package com.nhnacademy.common.thread.runnable.impl;
 
+import com.nhnacademy.common.config.ThreadPoolConfig;
 import com.nhnacademy.common.thread.Executable;
-import com.nhnacademy.common.thread.queue.ParserQueue;
+import com.nhnacademy.common.thread.queue.impl.ParserQueue;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -13,8 +14,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 이 클래스는 Parser 전용 Thread Pool에서 주기적으로 실행되며, <br>
  * Queue에 쌓인 작업을 하나씩 가져와 처리합니다.
  *
- * @see com.nhnacademy.common.thread.pool.ThreadPoolConfig
+ * @see ThreadPoolConfig
  */
+@Deprecated
 @Slf4j
 public final class ParserTask implements Runnable {
 
@@ -42,7 +44,7 @@ public final class ParserTask implements Runnable {
             } catch (InterruptedException e) {
                 log.error("Thread interrupted: {}", e.getMessage());
                 parserThread.interrupt();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 log.warn("Failed to parsing: {}", e.getMessage(), e);
             }
         }

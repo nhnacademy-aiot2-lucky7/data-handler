@@ -1,6 +1,6 @@
 package com.nhnacademy.common.thread.properties;
 
-import com.nhnacademy.common.thread.pool.ThreadPoolConfig;
+import com.nhnacademy.common.config.ThreadPoolConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -41,11 +41,11 @@ public final class ParserThreadPoolProperties {
 
     /**
      * Parser의 Thread Pool에서 항상 유지할 최소 스레드 수입니다. <br>
-     * core-pool-size 이하로는 스레드가 줄어들지 않으며, 기본적으로 1로 설정됩니다.
+     * core-pool-size 이하로는 스레드가 줄어들지 않으며, 기본적으로 2로 설정됩니다.
      * <hr>
-     * <b>Default</b>: 1
+     * <b>Default</b>: 2
      */
-    private int corePoolSize = 1;
+    private int corePoolSize = 2;
 
     /**
      * Parser의 Thread Pool에서 허용하는 최대 스레드 수입니다. <br>
@@ -74,8 +74,8 @@ public final class ParserThreadPoolProperties {
     private TimeUnit timeUnit = TimeUnit.MINUTES;
 
     /**
-     * 단일 스레드가 수행하는 작업 대기열(BlockingQueue)의 최대 수용 용량입니다. <br>
-     * 큐가 가득 차면, 새로운 스레드를 추가로 할당합니다.
+     * 작업 대기열(BlockingQueue)의 최대 수용 용량입니다. <br>
+     * 큐가 가득 차면 새 작업을 작업 대기열에 넣을 수 없습니다.
      * <hr>
      * <b>주의</b>: 0 이하로 설정하면 큐에 작업이 쌓이지 않고 바로 실행만 시도합니다.
      */
