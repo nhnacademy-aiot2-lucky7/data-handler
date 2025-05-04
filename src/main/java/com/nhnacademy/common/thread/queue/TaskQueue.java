@@ -29,9 +29,9 @@ public abstract class TaskQueue {
     }
 
     /**
-     * 처리할 작업을 대기열에 저장합니다.
+     * @deprecated : 큐가 가득 차면 무기한 블로킹되는 문제로 인해, 더 이상 사용하지 않습니다.
      */
-    public void put(Executable executable) throws InterruptedException {
+    private void put(Executable executable) throws InterruptedException {
         if (isNotRunning()) return;
         queue.put(executable);
     }

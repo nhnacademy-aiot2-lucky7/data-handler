@@ -2,7 +2,7 @@ package com.nhnacademy.common.thread.queue.impl;
 
 import com.nhnacademy.common.thread.properties.ParserThreadPoolProperties;
 import com.nhnacademy.common.thread.queue.TaskQueue;
-import com.nhnacademy.common.thread.runnable.ParserTask;
+import com.nhnacademy.common.thread.runnable.impl.ParserTask;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 

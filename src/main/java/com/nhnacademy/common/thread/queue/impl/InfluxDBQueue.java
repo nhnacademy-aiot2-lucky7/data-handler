@@ -2,7 +2,7 @@ package com.nhnacademy.common.thread.queue.impl;
 
 import com.nhnacademy.common.thread.properties.InfluxDBThreadPoolProperties;
 import com.nhnacademy.common.thread.queue.TaskQueue;
-import com.nhnacademy.common.thread.runnable.InfluxDBTask;
+import com.nhnacademy.common.thread.runnable.impl.InfluxDBTask;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 

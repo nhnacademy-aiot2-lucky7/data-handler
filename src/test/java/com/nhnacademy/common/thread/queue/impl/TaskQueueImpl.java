@@ -27,7 +27,7 @@ public final class TaskQueueImpl extends TaskQueue {
         try {
             for (int n = 0; n < getCapacity(); n++) {
                 final int index = n;
-                put(() -> log.info("작업 실행: {}", index));
+                offer(() -> log.info("작업 실행: {}", index));
             }
         } catch (InterruptedException e) {
             log.error("{}", e.getMessage(), e);
