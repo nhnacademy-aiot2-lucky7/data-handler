@@ -13,8 +13,6 @@ public final class InfluxDBExecute implements Executable {
 
     private final ParsingData parsingData;
 
-    private int retryCount = 0;
-
     public InfluxDBExecute(InfluxDBService influxDBService, ParsingData parsingData) {
         this.influxDBService = influxDBService;
         this.parsingData = parsingData;
@@ -31,15 +29,5 @@ public final class InfluxDBExecute implements Executable {
                 parsingData.getTimestamp()
         );
         influxDBService.sensorDataSave(influxData);
-    }
-
-    @Override
-    public int getRetryCount() {
-        return retryCount;
-    }
-
-    @Override
-    public void incrementRetryCount() {
-        retryCount++;
     }
 }
