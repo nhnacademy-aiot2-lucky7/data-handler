@@ -1,8 +1,8 @@
-package com.nhnacademy.common.thread.starter;
+package com.nhnacademy.common.thread.starter.impl;
 
-import com.nhnacademy.common.thread.queue.ParserQueue;
-import com.nhnacademy.common.thread.runnable.ParserTask;
-import jakarta.annotation.PostConstruct;
+import com.nhnacademy.common.thread.queue.impl.ParserQueue;
+import com.nhnacademy.common.thread.runnable.Task;
+import com.nhnacademy.common.thread.starter.ExecutorStarter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
-public final class ParserExecutorStarter {
-
-    private final ExecutorService parserExecutor;
+public final class ParserExecutorStarter extends ExecutorStarter {
 
     private final ParserQueue parserQueue;
 
@@ -23,15 +21,13 @@ public final class ParserExecutorStarter {
             @Qualifier("parserTaskRunning") AtomicBoolean running,
             ParserQueue parserQueue
     ) {
-        this.parserExecutor = parserExecutor;
+        super(parserExecutor, running);
         this.parserQueue = parserQueue;
         this.running = running;
     }
 
-    @PostConstruct
-    private void start() {
-        parserExecutor.submit(
-                new ParserTask(parserQueue, running)
-        );
+    @Override
+    protected Runnable createTask() {
+        return new Task(parserQueue, running);
     }
 }
