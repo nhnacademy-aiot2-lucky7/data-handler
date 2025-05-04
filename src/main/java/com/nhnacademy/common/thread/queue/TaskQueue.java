@@ -23,7 +23,7 @@ public abstract class TaskQueue {
      */
     private final AtomicBoolean running;
 
-    public TaskQueue(int capacity, AtomicBoolean running) {
+    protected TaskQueue(int capacity, AtomicBoolean running) {
         this.queue = new LinkedBlockingQueue<>(capacity);
         this.running = running;
     }
