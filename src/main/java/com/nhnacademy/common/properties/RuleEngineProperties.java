@@ -12,11 +12,6 @@ import org.springframework.stereotype.Component;
 public final class RuleEngineProperties {
 
     /**
-     * start data entry with Rule Engine
-     */
-    private boolean start = false;
-
-    /**
      * Rule Engine Service에 할당된 Ip address를 지정합니다.
      */
     private String ipAddress = "localhost";
