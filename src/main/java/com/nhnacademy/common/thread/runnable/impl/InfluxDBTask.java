@@ -1,8 +1,8 @@
-package com.nhnacademy.common.thread.runnable;
+package com.nhnacademy.common.thread.runnable.impl;
 
+import com.nhnacademy.common.config.ThreadPoolConfig;
 import com.nhnacademy.common.thread.Executable;
-import com.nhnacademy.common.thread.log.RetryLogger;
-import com.nhnacademy.common.thread.queue.InfluxDBQueue;
+import com.nhnacademy.common.thread.queue.impl.InfluxDBQueue;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,16 +14,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 이 클래스는 InfluxDB 전용 Thread Pool에서 주기적으로 실행되며, <br>
  * Queue에 쌓인 작업을 하나씩 가져와 처리합니다.
  *
- * @see com.nhnacademy.common.thread.pool.ThreadPoolConfig
+ * @see ThreadPoolConfig
  */
+@Deprecated
 @Slf4j
 public final class InfluxDBTask implements Runnable {
-
-    public static final int MAX_RETRIES = 3;
-
-    private static final long RETRY_DELAY_MS = 100L;
-
-    private final String action = "save 'SensorData'";
 
     /**
      * InfluxDB 작업 대기열
@@ -44,27 +39,13 @@ public final class InfluxDBTask implements Runnable {
                 && (running.get() || influxDBQueue.isNotEmpty())
         ) {
             try {
-                execute(influxDBQueue.take());
+                Executable influxDB = influxDBQueue.take();
+                influxDB.execute();
             } catch (InterruptedException e) {
                 log.error("Thread interrupted: {}", e.getMessage());
                 influxDBThread.interrupt();
-            }
-        }
-    }
-
-    private void execute(Executable influxDB) throws InterruptedException {
-        try {
-            influxDB.execute();
-        } catch (Throwable e) {
-            int retryCount = influxDB.getRetryCount();
-            if (retryCount < MAX_RETRIES) {
-                influxDB.incrementRetryCount();
-                RetryLogger.logRetry(action, retryCount + 1, MAX_RETRIES, e);
-
-                Thread.sleep(RETRY_DELAY_MS);
-                influxDBQueue.put(influxDB);
-            } else {
-                RetryLogger.logFailure(action, MAX_RETRIES, e);
+            } catch (Throwable e) {
+                log.warn("{}", e.getMessage(), e);
             }
         }
     }

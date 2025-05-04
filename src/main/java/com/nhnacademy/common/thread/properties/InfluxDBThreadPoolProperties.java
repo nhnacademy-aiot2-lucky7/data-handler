@@ -1,6 +1,6 @@
 package com.nhnacademy.common.thread.properties;
 
-import com.nhnacademy.common.thread.pool.ThreadPoolConfig;
+import com.nhnacademy.common.config.ThreadPoolConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -40,20 +40,25 @@ import java.util.concurrent.TimeUnit;
 public final class InfluxDBThreadPoolProperties {
 
     /**
+     * start data entry with InfluxDB
+     */
+    private boolean start = true;
+
+    /**
      * Parser의 Thread Pool에서 항상 유지할 최소 스레드 수입니다. <br>
      * core-pool-size 이하로는 스레드가 줄어들지 않으며, 기본적으로 1로 설정됩니다.
      * <hr>
      * <b>Default</b>: 1
      */
-    private int corePoolSize = 2;
+    private int corePoolSize = 1;
 
     /**
      * Parser의 Thread Pool에서 허용하는 최대 스레드 수입니다. <br>
      * 동시 작업 수가 많아지면 core-pool-size를 초과하여 이 수만큼 스레드를 생성할 수 있습니다.
      * <hr>
-     * <b>Default</b>: 2
+     * <b>Default</b>: 1
      */
-    private int maximumPoolSize = 2;
+    private int maximumPoolSize = 1;
 
     /**
      * core-pool-size를 초과하는 스레드가 유휴 상태일 때, 종료되기까지 기다리는 시간입니다.

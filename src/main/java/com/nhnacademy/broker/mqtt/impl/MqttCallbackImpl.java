@@ -4,7 +4,7 @@ import com.nhnacademy.broker.mqtt.MqttExecutionContext;
 import com.nhnacademy.broker.mqtt.MqttReconnectTrigger;
 import com.nhnacademy.broker.mqtt.execute.MqttExecute;
 import com.nhnacademy.common.parser.DataParserResolver;
-import com.nhnacademy.common.thread.queue.ParserQueue;
+import com.nhnacademy.common.thread.queue.impl.ParserQueue;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -57,7 +57,7 @@ public final class MqttCallbackImpl implements MqttCallback {
         if (topic.contains("/status")) return;
         String payload = new String(message.getPayload(), StandardCharsets.UTF_8);
         try {
-            parserQueue.put(
+            parserQueue.offer(
                     new MqttExecute(
                             mqttExecutionContext,
                             parserResolver.getDataParser(payload),
@@ -67,6 +67,8 @@ public final class MqttCallbackImpl implements MqttCallback {
             );
         } catch (NoSuchElementException e) {
             log.warn("{}", e.getMessage(), e);
+        } catch (InterruptedException e) {
+            log.error("{}", e.getMessage(), e);
         }
     }
 
