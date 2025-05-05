@@ -45,7 +45,7 @@ public final class MqttCallbackImpl implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable cause) {
-        log.error("MQTT Client connection error: {}", cause.getMessage());
+        log.error("MQTT Client connection error: {}", cause.getMessage(), cause);
         reconnectTrigger.triggerReconnect(); // 관리 객체에 직접 접근하지 않음
     }
 

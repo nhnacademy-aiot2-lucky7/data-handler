@@ -147,6 +147,11 @@ public final class MqttManagement {
     public void reconnect() {
         if (!reconnecting.compareAndSet(false, true)) {
             log.info("이미 재연결 중입니다.");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             return;
         }
 
