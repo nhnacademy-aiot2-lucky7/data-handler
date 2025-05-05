@@ -29,7 +29,7 @@ public class InfluxDBServiceImpl implements InfluxDBService {
         if (!influxDBRepository.save(point)) {
             /// TODO: Thread 영역에서 실패한 작업을 다시 시도할 수 있도록 throws 발생
             /// 추후 커스텀 Exception을 제작할 예정...
-            throw new RuntimeException();
+            throw new RuntimeException("저장 실패");
         }
     }
 }

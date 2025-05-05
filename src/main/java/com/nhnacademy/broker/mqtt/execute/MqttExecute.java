@@ -55,8 +55,8 @@ public final class MqttExecute implements Executable {
     public void execute() {
         try {
             payloadParsing();
-        } catch (IOException e) {
-            log.error("Parsing failed: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("Parsing failed(topic: {}): {}", topic, e.getMessage(), e);
             return;
         }
         /// TODO: 지원되지 않는 형식의 value 구조일 경우를 처리할 로직을 추후에 추가...
@@ -71,8 +71,9 @@ public final class MqttExecute implements Executable {
         try {
             context.influxDBTaskOffer(parsingData);
             context.ruleEngineTaskOffer(parsingData);
-        } catch (Throwable e) {
-            log.error("{}", e.getMessage(), e);
+        } catch (InterruptedException e) {
+            log.error("MQTT Execute: {}", e.getMessage(), e);
+            Thread.currentThread().interrupt();
         }
     }
 
