@@ -4,16 +4,20 @@ import com.nhnacademy.broker.mqtt.MqttExecutionContext;
 import com.nhnacademy.common.parser.DataParser;
 import com.nhnacademy.common.parser.dto.ParsingData;
 import com.nhnacademy.common.thread.Executable;
-import com.nhnacademy.influxdb.execute.InfluxDBExecute;
-import com.nhnacademy.rule.execute.RuleEngineExecute;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 public final class MqttExecute implements Executable {
+
+    /**
+     * 반올림에 사용하는 배수라는 점을 직관적으로 표현합니다.
+     */
+    private static final double DEFAULT_ROUNDING_FACTOR = 100.0;
 
     private final MqttExecutionContext context;
 
@@ -51,10 +55,12 @@ public final class MqttExecute implements Executable {
     public void execute() {
         try {
             payloadParsing();
-        } catch (IOException e) {
-            log.error("Parsing failed: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("Parsing failed(topic: {}): {}", topic, e.getMessage(), e);
             return;
         }
+        /// TODO: 지원되지 않는 형식의 value 구조일 경우를 처리할 로직을 추후에 추가...
+        if (Objects.isNull(value)) return;
         topicParsing();
 
         ParsingData parsingData = new ParsingData(
@@ -62,12 +68,13 @@ public final class MqttExecute implements Executable {
                 spot, type, value, timestamp
         );
 
-        context.getRuleEngineQueue().put(
-                new RuleEngineExecute(context.getRuleEngineService(), parsingData)
-        );
-        context.getInfluxDBQueue().put(
-                new InfluxDBExecute(context.getInfluxDBService(), parsingData)
-        );
+        try {
+            context.influxDBTaskOffer(parsingData);
+            context.ruleEngineTaskOffer(parsingData);
+        } catch (InterruptedException e) {
+            log.error("MQTT Execute: {}", e.getMessage(), e);
+            Thread.currentThread().interrupt();
+        }
     }
 
     private void topicParsing() {
@@ -78,9 +85,7 @@ public final class MqttExecute implements Executable {
                     location = parsing[++n];
                     break;
                 case "d":
-                    String id = parsing[++n];
-                    // gatewayId = id;
-                    sensorId = id;
+                    sensorId = parsing[++n];
                     break;
                 case "e":
                     type = parsing[++n];
@@ -93,13 +98,11 @@ public final class MqttExecute implements Executable {
     private void payloadParsing() throws IOException {
         Map<String, Object> parsing = dataParser.parsing(payload);
 
-        // 소수점 2자리까지만
-        // Math.ceil();
         Object rawValue = parsing.get("value");
         if (rawValue instanceof Number number) {
-            value = number.doubleValue();
+            value = Math.round(number.doubleValue() * DEFAULT_ROUNDING_FACTOR) / DEFAULT_ROUNDING_FACTOR;
         } else if (rawValue instanceof String string) {
-            value = Double.parseDouble(string);
+            value = Math.round(Double.parseDouble(string) * DEFAULT_ROUNDING_FACTOR) / DEFAULT_ROUNDING_FACTOR;
         }
 
         Object rawTime = parsing.get("time");

@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public abstract class AbstractExecutorShutdown {
+public abstract class ExecutorShutdown {
 
     protected void shutdownExecutor(ExecutorService executor, String name) {
         log.info("{}: shutting down...", name);

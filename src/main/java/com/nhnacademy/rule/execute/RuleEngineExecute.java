@@ -11,8 +11,6 @@ public final class RuleEngineExecute implements Executable {
 
     private final ParsingData parsingData;
 
-    private int retryCount = 0;
-
     public RuleEngineExecute(RuleEngineService ruleEngineService, ParsingData parsingData) {
         this.ruleEngineService = ruleEngineService;
         this.parsingData = parsingData;
@@ -28,15 +26,5 @@ public final class RuleEngineExecute implements Executable {
                 parsingData.getTimestamp()
         );
         ruleEngineService.sensorDataSend(ruleData);
-    }
-
-    @Override
-    public int getRetryCount() {
-        return retryCount;
-    }
-
-    @Override
-    public void incrementRetryCount() {
-        retryCount++;
     }
 }

@@ -1,4 +1,4 @@
-package com.nhnacademy.common.thread.pool;
+package com.nhnacademy.common.config;
 
 import com.nhnacademy.common.thread.exception.CustomUncaughtExceptionHandler;
 import com.nhnacademy.common.thread.properties.InfluxDBThreadPoolProperties;
@@ -7,11 +7,7 @@ import com.nhnacademy.common.thread.properties.RuleEngineThreadPoolProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -47,12 +43,12 @@ public class ThreadPoolConfig {
 
     @Bean("influxDBTaskRunning")
     public AtomicBoolean influxDBTaskRunning() {
-        return new AtomicBoolean(true);
+        return new AtomicBoolean(influxDBThreadPoolProperties.isStart());
     }
 
     @Bean("ruleEngineTaskRunning")
     public AtomicBoolean ruleEngineTaskRunning() {
-        return new AtomicBoolean(true);
+        return new AtomicBoolean(ruleEngineThreadPoolProperties.isStart());
     }
 
     /**

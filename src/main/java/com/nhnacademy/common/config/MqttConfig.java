@@ -37,7 +37,7 @@ public class MqttConfig {
     @Bean
     MqttConnectOptions customConnectOptions() {
         MqttConnectOptions options = new MqttConnectOptions();
-        options.setKeepAliveInterval(300);      // seconds
+        options.setKeepAliveInterval(3600);     // seconds
         options.setAutomaticReconnect(true);    // 연결이 손실될 경우, 재연결 시도
         options.setCleanSession(true);          // 재연결 되었을 시, 이전의 session 연결을 clean 합니다.
         return options;
