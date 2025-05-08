@@ -23,7 +23,7 @@ public final class MqttCallbackImpl implements MqttCallback {
 
     private final MqttExecutionContext mqttExecutionContext;
 
-    private final MqttReconnectTrigger reconnectTrigger;
+    private final MqttReconnectTrigger mqttReconnectTrigger;
 
     private final DataParserResolver parserResolver;
 
@@ -31,11 +31,11 @@ public final class MqttCallbackImpl implements MqttCallback {
 
     public MqttCallbackImpl(
             MqttExecutionContext mqttExecutionContext,
-            MqttReconnectTrigger reconnectTrigger,
+            MqttReconnectTrigger mqttReconnectTrigger,
             DataParserResolver parserResolver, ParserQueue parserQueue
     ) {
         this.mqttExecutionContext = mqttExecutionContext;
-        this.reconnectTrigger = reconnectTrigger;
+        this.mqttReconnectTrigger = mqttReconnectTrigger;
         this.parserResolver = parserResolver;
         this.parserQueue = parserQueue;
     }
@@ -46,7 +46,7 @@ public final class MqttCallbackImpl implements MqttCallback {
     @Override
     public void connectionLost(Throwable cause) {
         log.error("MQTT Client connection error: {}", cause.getMessage(), cause);
-        reconnectTrigger.triggerReconnect(); // 관리 객체에 직접 접근하지 않음
+        mqttReconnectTrigger.reconnection();
     }
 
     /**
@@ -66,9 +66,10 @@ public final class MqttCallbackImpl implements MqttCallback {
                     )
             );
         } catch (NoSuchElementException e) {
-            log.warn("{}", e.getMessage(), e);
+            log.warn("MQTT Message Arrived: {}", e.getMessage(), e);
         } catch (InterruptedException e) {
-            log.error("{}", e.getMessage(), e);
+            log.error("MQTT Message Arrived: {}", e.getMessage(), e);
+            Thread.currentThread().interrupt();
         }
     }
 
