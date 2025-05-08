@@ -13,8 +13,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Component
@@ -81,9 +81,11 @@ public final class MqttManagement {
      * Sync MQTT Client - 객체 초기화
      */
     private void initMqttClient() throws MqttException {
+        String clientId = "%s_%d".formatted(properties.getClientId(), new Date().getTime());
+        log.info("MQTT Sync Client ID: {}", clientId);
         mqttClient = new MqttClient(
                 properties.getBrokerAddress(),
-                properties.getClientId(),
+                clientId,
                 new MemoryPersistence()
         );
     }
@@ -92,9 +94,11 @@ public final class MqttManagement {
      * Async MQTT Client - 객체 초기화
      */
     private void initMqttAsyncClient() throws MqttException {
+        String clientId = "%s_%d".formatted(properties.getClientId(), new Date().getTime());
+        log.info("MQTT Async Client ID: {}", clientId);
         mqttAsyncClient = new MqttAsyncClient(
                 properties.getBrokerAddress(),
-                properties.getClientId(),
+                clientId,
                 new MemoryPersistence()
         );
     }
@@ -139,44 +143,5 @@ public final class MqttManagement {
                 log.warn("MQTT Async Client: closed fail - {}", e.getMessage());
             }
         }
-    }
-
-    private final AtomicBoolean reconnecting = new AtomicBoolean(false);
-
-    /// TODO: 긴급 추가
-    public void reconnect() {
-        if (!reconnecting.compareAndSet(false, true)) {
-            log.info("이미 재연결 중입니다.");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            return;
-        }
-
-        new Thread(() -> {
-            try {
-                while (true) {
-                    try {
-                        close();
-                        if (properties.isSyncMode()) {
-                            runSync();
-                        } else {
-                            runAsync();
-                        }
-                        log.info("✅ MQTT 재연결 성공");
-                        break;
-                    } catch (MqttException e) {
-                        log.warn("🔁 MQTT 재연결 실패: {}", e.getMessage());
-                    }
-                    Thread.sleep(5000);
-                }
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-            } finally {
-                reconnecting.set(false);
-            }
-        }, "mqtt-reconnect-thread").start();
     }
 }
