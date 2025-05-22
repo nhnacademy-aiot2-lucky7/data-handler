@@ -4,6 +4,7 @@ import com.nhnacademy.common.properties.RuleEngineProperties;
 import com.nhnacademy.rule.adapter.RuleEngineAdapter;
 import com.nhnacademy.rule.dto.RuleData;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
@@ -16,7 +17,10 @@ public class RuleEngineAdapterImpl implements RuleEngineAdapter {
 
     private final WebClient webClient;
 
-    public RuleEngineAdapterImpl(RuleEngineProperties properties, WebClient webClient) {
+    public RuleEngineAdapterImpl(
+            RuleEngineProperties properties,
+            @Qualifier("ruleEngineWebClient") WebClient webClient
+    ) {
         this.properties = properties;
         this.webClient = webClient;
     }

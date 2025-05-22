@@ -1,10 +1,8 @@
 package com.nhnacademy.common.parser.dto;
 
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 public final class ParsingData {
 
     /**

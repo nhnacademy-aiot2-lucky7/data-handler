@@ -7,7 +7,11 @@ import com.nhnacademy.common.thread.properties.RuleEngineThreadPoolProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -37,17 +41,17 @@ public class ThreadPoolConfig {
     }
 
     @Bean("parserTaskRunning")
-    public AtomicBoolean parserTaskRunning() {
+    AtomicBoolean parserTaskRunning() {
         return new AtomicBoolean(true);
     }
 
     @Bean("influxDBTaskRunning")
-    public AtomicBoolean influxDBTaskRunning() {
+    AtomicBoolean influxDBTaskRunning() {
         return new AtomicBoolean(influxDBThreadPoolProperties.isStart());
     }
 
     @Bean("ruleEngineTaskRunning")
-    public AtomicBoolean ruleEngineTaskRunning() {
+    AtomicBoolean ruleEngineTaskRunning() {
         return new AtomicBoolean(ruleEngineThreadPoolProperties.isStart());
     }
 
@@ -55,7 +59,7 @@ public class ThreadPoolConfig {
      * Parser 작업을 처리하는 고정 크기의 스레드 풀을 생성합니다.
      */
     @Bean("parserExecutor")
-    public ExecutorService parserExecutor() {
+    ExecutorService parserExecutor() {
         return new ThreadPoolExecutor(
                 parserThreadPoolProperties.getCorePoolSize(),
                 parserThreadPoolProperties.getMaximumPoolSize(),
@@ -70,7 +74,7 @@ public class ThreadPoolConfig {
      * InfluxDB 작업을 처리하는 고정 크기의 스레드 풀을 생성합니다.
      */
     @Bean("influxDBExecutor")
-    public ExecutorService influxDBExecutor() {
+    ExecutorService influxDBExecutor() {
         return new ThreadPoolExecutor(
                 influxDBThreadPoolProperties.getCorePoolSize(),
                 influxDBThreadPoolProperties.getMaximumPoolSize(),
@@ -85,7 +89,7 @@ public class ThreadPoolConfig {
      * Rule Engine 작업을 처리하는 고정 크기의 스레드 풀을 생성합니다.
      */
     @Bean("ruleEngineExecutor")
-    public ExecutorService ruleEngineExecutor() {
+    ExecutorService ruleEngineExecutor() {
         return new ThreadPoolExecutor(
                 ruleEngineThreadPoolProperties.getCorePoolSize(),
                 ruleEngineThreadPoolProperties.getMaximumPoolSize(),

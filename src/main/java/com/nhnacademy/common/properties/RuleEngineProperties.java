@@ -27,6 +27,6 @@ public final class RuleEngineProperties {
     private String path = "/ruleEngine/data";
 
     public String getBaseUrl() {
-        return "https://%s:%d".formatted(ipAddress, port);
+        return "http://%s:%d".formatted(ipAddress, port);
     }
 }
