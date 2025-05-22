@@ -24,7 +24,7 @@ public final class RuleEngineProperties {
     /**
      * Rule Engine Service에서 Parsing 데이터를 받을 수 있는 REST Controller Path를 지정합니다.
      */
-    private String path = "/ruleEngine/data";
+    private String path = "/rule_engine/data";
 
     public String getBaseUrl() {
         return "http://%s:%d".formatted(ipAddress, port);
