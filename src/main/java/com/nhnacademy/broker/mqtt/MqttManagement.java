@@ -1,6 +1,7 @@
 package com.nhnacademy.broker.mqtt;
 
 import com.nhnacademy.common.properties.MqttProperties;
+import com.nhnacademy.sensor.service.SensorCacheService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
@@ -20,6 +21,8 @@ import java.util.Objects;
 @Component
 public final class MqttManagement {
 
+    private final SensorCacheService sensorInfoCache;
+
     private final MqttProperties properties;
 
     private final MqttCallback callback;
@@ -31,9 +34,11 @@ public final class MqttManagement {
     private IMqttAsyncClient mqttAsyncClient;
 
     public MqttManagement(
+            SensorCacheService sensorInfoCache,
             MqttProperties properties, MqttCallback callback,
             MqttConnectOptions options, MqttReconnectTrigger reconnectTrigger
     ) {
+        this.sensorInfoCache = sensorInfoCache;
         this.properties = properties;
         this.callback = callback;
         this.options = options;
@@ -46,6 +51,12 @@ public final class MqttManagement {
      */
     @PostConstruct
     public void init() throws MqttException {
+        try {
+            sensorInfoCache.getInitializationMono().block();
+        } catch (Exception e) {
+            log.error("센서 정보 캐싱 초기화 실패: {}", e.getMessage());
+        }
+
         if (properties.isSyncMode()) {
             runSync();
         } else {

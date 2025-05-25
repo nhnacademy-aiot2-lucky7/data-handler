@@ -4,9 +4,7 @@ import com.nhnacademy.common.parser.dto.ParsingData;
 import com.nhnacademy.common.thread.Executable;
 import com.nhnacademy.influxdb.dto.InfluxData;
 import com.nhnacademy.influxdb.service.InfluxDBService;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public final class InfluxDBExecute implements Executable {
 
     private final InfluxDBService influxDBService;
