@@ -27,6 +27,7 @@ public class WebClientConfig {
     WebClient sensorWebClient() {
         return WebClient.builder()
                 .baseUrl(sensorProperties.getBaseUrl())
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
