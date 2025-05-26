@@ -13,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 각 영역의 Thread Pool을 생성하는 설정 클래스입니다.
@@ -66,7 +67,7 @@ public class ThreadPoolConfig {
                 parserThreadPoolProperties.getKeepAliveTime(),
                 parserThreadPoolProperties.getTimeUnit(),
                 new LinkedBlockingQueue<>(5),
-                getCustomThreadFactory()
+                getCustomThreadFactory(new AtomicInteger(), "parser")
         );
     }
 
@@ -81,7 +82,7 @@ public class ThreadPoolConfig {
                 influxDBThreadPoolProperties.getKeepAliveTime(),
                 influxDBThreadPoolProperties.getTimeUnit(),
                 new LinkedBlockingQueue<>(5),
-                getCustomThreadFactory()
+                getCustomThreadFactory(new AtomicInteger(), "influx")
         );
     }
 
@@ -96,13 +97,14 @@ public class ThreadPoolConfig {
                 ruleEngineThreadPoolProperties.getKeepAliveTime(),
                 ruleEngineThreadPoolProperties.getTimeUnit(),
                 new LinkedBlockingQueue<>(5),
-                getCustomThreadFactory()
+                getCustomThreadFactory(new AtomicInteger(), "rule")
         );
     }
 
-    private ThreadFactory getCustomThreadFactory() {
+    private ThreadFactory getCustomThreadFactory(AtomicInteger threadNumber, String prefix) {
         return r -> {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
+            thread.setName("%s-pool-%d".formatted(prefix, threadNumber.incrementAndGet()));
             thread.setUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
             return thread;
         };
