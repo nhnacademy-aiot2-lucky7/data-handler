@@ -59,7 +59,6 @@ public final class MqttExecute implements Executable {
             log.warn("Parsing failed(topic: {} / payload: {}): {}", topic, payload, e.getMessage(), e);
             return;
         }
-        /// TODO: 지원되지 않는 형식의 value 구조일 경우를 처리할 로직을 추후에 추가...
         if (Objects.isNull(value)) return;
         topicParsing();
 
@@ -68,6 +67,7 @@ public final class MqttExecute implements Executable {
                 spot, type, value, timestamp
         );
 
+        context.checkAndRegister(parsingData);
         try {
             context.influxDBTaskOffer(parsingData);
             context.ruleEngineTaskOffer(parsingData);
@@ -81,11 +81,17 @@ public final class MqttExecute implements Executable {
         String[] parsing = topic.split("/");
         for (int n = 0; n < parsing.length - 1; n++) {
             switch (parsing[n]) {
-                case "p":
-                    location = parsing[++n];
+                case "g":
+                    gatewayId = parsing[++n];
                     break;
                 case "d":
                     sensorId = parsing[++n];
+                    break;
+                case "p":
+                    location = parsing[++n];
+                    break;
+                case "n":
+                    spot = parsing[++n];
                     break;
                 case "e":
                     type = parsing[++n];

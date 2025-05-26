@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Setter
 @Component
 @ConfigurationProperties(prefix = "thread-pool.rule-engine")
-public class RuleEngineThreadPoolProperties {
+public final class RuleEngineThreadPoolProperties {
 
     /**
      * start data entry with Rule Engine

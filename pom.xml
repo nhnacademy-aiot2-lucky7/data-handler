@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nhnacademy</groupId>
-    <artifactId>spring-iot-data-handler</artifactId>
+    <artifactId>data-handler</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-iot-data-handler</name>
-    <description>spring-iot-data-handler</description>
+    <name>data-handler</name>
+    <description>data-handler</description>
     <url/>
     <licenses>
         <license/>
