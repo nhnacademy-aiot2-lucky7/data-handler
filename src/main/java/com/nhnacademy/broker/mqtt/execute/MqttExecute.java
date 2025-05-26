@@ -56,7 +56,7 @@ public final class MqttExecute implements Executable {
         try {
             payloadParsing();
         } catch (Exception e) {
-            log.error("Parsing failed(topic: {}): {}", topic, e.getMessage(), e);
+            log.warn("Parsing failed(topic: {} / payload: {}): {}", topic, payload, e.getMessage(), e);
             return;
         }
         if (Objects.isNull(value)) return;
