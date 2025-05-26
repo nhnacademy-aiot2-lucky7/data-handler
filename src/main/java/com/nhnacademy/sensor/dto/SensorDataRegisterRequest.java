@@ -9,7 +9,7 @@ public class SensorDataRegisterRequest {
     @JsonProperty("info")
     SensorInfo sensorInfo;
 
-    @JsonProperty("data_type_en_name")
+    @JsonProperty("type_en_name")
     String dataTypeEnName;
 
     @JsonProperty("sensor_status")

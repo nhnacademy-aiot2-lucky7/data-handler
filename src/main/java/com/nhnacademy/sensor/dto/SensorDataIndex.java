@@ -21,7 +21,7 @@ public final class SensorDataIndex {
     public SensorDataIndex(
             @JsonProperty("gateway_id") String gatewayId,
             @JsonProperty("sensor_id") String sensorId,
-            @JsonProperty("data_type_en_name") String dataTypeEnName
+            @JsonProperty("type_en_name") String dataTypeEnName
     ) {
         this.gatewayId = gatewayId;
         this.sensorId = sensorId;
