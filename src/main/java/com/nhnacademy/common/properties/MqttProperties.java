@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "mqtt")
+@ConfigurationProperties(prefix = "core-broker-receiver")
 public final class MqttProperties {
 
     private TransferMode receiveMode = TransferMode.ASYNC;
 
     private String brokerAddress = "tcp://localhost:1883";
 
-    private String clientId = "mqtt-client-paho";
+    private String clientId = "core-broker-receiver";
 
-    private String topic = "data/#";
+    private String topic = "project-data/#";
 
     private Integer qos = 1;
 

@@ -20,9 +20,9 @@ public class InfluxDBServiceImpl implements InfluxDBService {
 
     public void sensorDataSave(InfluxData influxData) {
         Point point = Point
-                .measurement("sensor-data")
-                .addTag("gateway-id", influxData.getGatewayId())
-                .addTag("sensor-id", influxData.getSensorId())
+                .measurement("sensor_data")
+                .addTag("gateway_id", influxData.getGatewayId())
+                .addTag("sensor_id", influxData.getSensorId())
                 .addField(influxData.getType(), influxData.getValue())
                 .time(influxData.getTimestamp(), WritePrecision.MS);
 

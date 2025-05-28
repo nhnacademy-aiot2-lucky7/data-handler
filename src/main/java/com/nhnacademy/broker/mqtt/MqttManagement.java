@@ -14,7 +14,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Objects;
 
 @Slf4j
@@ -92,7 +91,11 @@ public final class MqttManagement {
      * Sync MQTT Client - 객체 초기화
      */
     private void initMqttClient() throws MqttException {
-        String clientId = "%s_%d".formatted(properties.getClientId(), new Date().getTime());
+        String clientId = "%s_%d".formatted(
+                properties.getClientId(),
+                System.currentTimeMillis()
+        );
+
         log.info("MQTT Sync Client ID: {}", clientId);
         mqttClient = new MqttClient(
                 properties.getBrokerAddress(),
@@ -105,7 +108,11 @@ public final class MqttManagement {
      * Async MQTT Client - 객체 초기화
      */
     private void initMqttAsyncClient() throws MqttException {
-        String clientId = "%s_%d".formatted(properties.getClientId(), new Date().getTime());
+        String clientId = "%s_%d".formatted(
+                properties.getClientId(),
+                System.currentTimeMillis()
+        );
+
         log.info("MQTT Async Client ID: {}", clientId);
         mqttAsyncClient = new MqttAsyncClient(
                 properties.getBrokerAddress(),
