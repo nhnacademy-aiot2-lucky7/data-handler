@@ -1,5 +1,7 @@
 package com.nhnacademy.common.properties;
 
+import com.nhnacademy.common.enums.CoreBrokerTransportMode;
+import com.nhnacademy.common.enums.TransferMode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,23 +11,23 @@ import org.springframework.stereotype.Component;
 @Setter
 @Component
 @ConfigurationProperties(prefix = "core-broker-receiver")
-public final class MqttProperties {
+public final class CoreBrokerProperties {
 
     private TransferMode receiveMode = TransferMode.ASYNC;
 
-    private String brokerAddress = "tcp://localhost:1883";
+    private CoreBrokerTransportMode transportMode = CoreBrokerTransportMode.TCP;
+
+    private String address = "localhost";
+
+    private int port = 1883;
 
     private String clientId = "core-broker-receiver";
 
-    private String topic = "project-data/#";
+    private String topic = "team1_data/#";
 
     private Integer qos = 1;
 
-    public boolean isSyncMode() {
-        return receiveMode.equals(TransferMode.SYNC);
-    }
-
-    public boolean isAsyncMode() {
-        return receiveMode.equals(TransferMode.ASYNC);
+    public boolean isSecure() {
+        return transportMode.isSecure();
     }
 }
