@@ -1,6 +1,6 @@
 package com.nhnacademy.broker.mqtt;
 
-import com.nhnacademy.common.properties.MqttProperties;
+import com.nhnacademy.broker.mqtt.dto.MqttBroker;
 import com.nhnacademy.sensor.service.SensorCacheService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public final class MqttManagement {
 
     private final SensorCacheService sensorInfoCache;
 
-    private final MqttProperties properties;
+    private final MqttBroker mqttBroker;
 
     private final MqttCallback callback;
 
@@ -33,12 +33,12 @@ public final class MqttManagement {
     private IMqttAsyncClient mqttAsyncClient;
 
     public MqttManagement(
-            SensorCacheService sensorInfoCache,
-            MqttProperties properties, MqttCallback callback,
-            MqttConnectOptions options, MqttReconnectTrigger reconnectTrigger
+            SensorCacheService sensorInfoCache, MqttBroker mqttBroker,
+            MqttCallback callback, MqttConnectOptions options,
+            MqttReconnectTrigger reconnectTrigger
     ) {
         this.sensorInfoCache = sensorInfoCache;
-        this.properties = properties;
+        this.mqttBroker = mqttBroker;
         this.callback = callback;
         this.options = options;
         reconnectTrigger.register(this); // 역참조 등록
@@ -56,7 +56,7 @@ public final class MqttManagement {
             log.error("센서 정보 캐싱 초기화 실패: {}", e.getMessage());
         }
 
-        if (properties.isSyncMode()) {
+        if (mqttBroker.isSyncMode()) {
             runSync();
         } else {
             runAsync();
@@ -71,7 +71,7 @@ public final class MqttManagement {
         mqttClient.setManualAcks(false);
         mqttClient.setCallback(callback);
         mqttClient.connect(options);
-        mqttClient.subscribe(properties.getTopic(), properties.getQos());
+        mqttClient.subscribe(mqttBroker.getTopic(), mqttBroker.getQos());
         log.info("MQTT Sync Client Starting: {}", mqttClient.isConnected());
     }
 
@@ -83,7 +83,7 @@ public final class MqttManagement {
         mqttAsyncClient.setManualAcks(false);
         mqttAsyncClient.setCallback(callback);
         mqttAsyncClient.connect(options).waitForCompletion();
-        mqttAsyncClient.subscribe(properties.getTopic(), properties.getQos()).waitForCompletion();
+        mqttAsyncClient.subscribe(mqttBroker.getTopic(), mqttBroker.getQos()).waitForCompletion();
         log.info("MQTT Async Client Starting: {}", mqttAsyncClient.isConnected());
     }
 
@@ -91,15 +91,10 @@ public final class MqttManagement {
      * Sync MQTT Client - 객체 초기화
      */
     private void initMqttClient() throws MqttException {
-        String clientId = "%s_%d".formatted(
-                properties.getClientId(),
-                System.currentTimeMillis()
-        );
-
-        log.info("MQTT Sync Client ID: {}", clientId);
+        log.info("MQTT Sync Client ID: {}", mqttBroker.getClientId());
         mqttClient = new MqttClient(
-                properties.getBrokerAddress(),
-                clientId,
+                mqttBroker.getServerURI(),
+                mqttBroker.getBuildClientIdWithTimestamp(),
                 new MemoryPersistence()
         );
     }
@@ -108,15 +103,10 @@ public final class MqttManagement {
      * Async MQTT Client - 객체 초기화
      */
     private void initMqttAsyncClient() throws MqttException {
-        String clientId = "%s_%d".formatted(
-                properties.getClientId(),
-                System.currentTimeMillis()
-        );
-
-        log.info("MQTT Async Client ID: {}", clientId);
+        log.info("MQTT Async Client ID: {}", mqttBroker.getClientId());
         mqttAsyncClient = new MqttAsyncClient(
-                properties.getBrokerAddress(),
-                clientId,
+                mqttBroker.getServerURI(),
+                mqttBroker.getBuildClientIdWithTimestamp(),
                 new MemoryPersistence()
         );
     }
@@ -126,7 +116,7 @@ public final class MqttManagement {
      * <b>Default Option</b> - {@code ASYNC}
      */
     public void close() {
-        if (properties.isSyncMode()) {
+        if (mqttBroker.isSyncMode()) {
             closeSync();
         } else {
             closeAsync();
