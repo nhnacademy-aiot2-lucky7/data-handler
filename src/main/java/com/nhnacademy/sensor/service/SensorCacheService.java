@@ -78,7 +78,7 @@ public class SensorCacheService {
                 );
 
         return webClient.post()
-                .uri(path)
+                .uri("%s/sensor-indexes".formatted(path))
                 .bodyValue(request)
                 .retrieve()
                 .onStatus(
