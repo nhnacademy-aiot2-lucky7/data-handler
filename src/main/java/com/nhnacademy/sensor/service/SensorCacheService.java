@@ -46,7 +46,7 @@ public class SensorCacheService {
     @PostConstruct
     public void init() {
         initializationMono = webClient.get()
-                .uri(path)
+                .uri("%s/sensor-indexes".formatted(path))
                 .retrieve()
                 .bodyToFlux(SensorDataIndex.class)
                 .collectList()
